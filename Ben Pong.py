@@ -9,7 +9,7 @@ class Paddle(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.velocity = 0
-
+      
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -25,6 +25,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+AQUA = (0, 139, 139)
  
 pygame.init()
 
@@ -96,30 +97,30 @@ while not done and display_instructions:
         # That could be both easier and more flexible.
  
         text = font.render("Instructions", True, WHITE)
-        screen.blit(text, [10, 10])
+        screen.blit(text, [275, 10])
        
         text = font.render("Enter your name: ", True, WHITE)
-        screen.blit(text, [10, 40])    
+        screen.blit(text, [10, 80])    
        
         text = font.render(name, True, WHITE)
-        screen.blit(text, [220, 40])        
+        screen.blit(text, [220, 80])        
  
-        text = font.render("Hit enter to continue", True, WHITE)
-        screen.blit(text, [10, 80])
+        text = font.render("Then hit enter to continue", True, WHITE)
+        screen.blit(text, [10, 120])
        
         text = font.render("Page 1", True, WHITE)
-        screen.blit(text, [10, 120])
+        screen.blit(text, [10, 10])
  
     if instruction_page == 2:
         # Draw instructions, page 2
-        text = font.render("This game is pong, move the paddle and hit the ball", True, WHITE)
-        screen.blit(text, [10, 10])    
+        text = font.render("Welcome to Pong! move the paddle and hit the ball", True, AQUA)
+        screen.blit(text, [45, 250])    
  
         text = font.render("Hit enter to continue", True, WHITE)
-        screen.blit(text, [10, 40])
+        screen.blit(text, [10, 80])
  
         text = font.render("Page 2", True, WHITE)
-        screen.blit(text, [10, 80])
+        screen.blit(text, [10, 40])
  
     # Limit to 60 frames per second
     clock.tick(60)
@@ -143,16 +144,21 @@ while not done:
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 player_one.velocity = 0
-
+                
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                player_two.velocity = -7
+            elif event.key == pygame.K_DOWN:
+                player_two.velocity = 7
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                player_two.velocity = 0        
  
     # Set the screen background
     screen.fill(BLACK)
     
     player_one.rect.y += player_one.velocity
-    
-    # Draw the rectangle
-    pygame.draw.ellipse(screen, WHITE, [ellipse_x, ellipse_y, 25, 25])
-    
+    player_two.rect.y += player_one.velocity
  
     # Move the rectangle starting point
     ball.rect.x += ellipse_change_x
